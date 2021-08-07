@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace DataAbstraction
+namespace Data.Abstractions
 {
     public interface ISummaryRepository
     {

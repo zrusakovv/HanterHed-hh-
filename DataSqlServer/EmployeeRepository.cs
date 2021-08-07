@@ -1,4 +1,4 @@
-﻿using DataAbstraction;
+﻿using Data.Abstractions;
 using Entities;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DataSqlServer
+namespace Data.SqlServer
 {
     public class EmployeeRepository : RepositoryBase<Employee>, IEmployeeRepository
     {

@@ -1,4 +1,4 @@
-﻿using DataAbstraction;
+﻿using Data.Abstractions;
 using Entities;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataSqlServer
+namespace Data.SqlServer
 {
     public class SummaryRepository : RepositoryBase<Summary>, ISummaryRepository
     {

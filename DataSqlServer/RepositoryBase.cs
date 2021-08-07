@@ -1,11 +1,10 @@
-﻿using DataAbstraction;
+﻿using Data.Abstractions;
 using Entities;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 
-namespace DataSqlServer
+namespace Data.SqlServer
 {
     public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
     {

@@ -1,8 +1,8 @@
-﻿using DataAbstraction;
+﻿using Data.Abstractions;
 using Entities;
 using System.Threading.Tasks;
 
-namespace DataSqlServer
+namespace Data.SqlServer
 {
     public class RepositoryManager : IRepositoryManager
     {

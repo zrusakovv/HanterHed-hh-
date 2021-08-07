@@ -3,19 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31515.178
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HanterHed(hh)", "HanterHed(hh)\HanterHed(hh).csproj", "{2CE8DA7F-4D01-4409-9F86-7E8EE9F87DDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HanterHed(hh)", "HanterHed(hh)\HanterHed(hh).csproj", "{2CE8DA7F-4D01-4409-9F86-7E8EE9F87DDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAbstraction", "DataAbstraction\DataAbstraction.csproj", "{0C7B6E4D-519A-469D-945B-20749F7D1763}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.Abstractions", "DataAbstraction\Data.Abstractions.csproj", "{0C7B6E4D-519A-469D-945B-20749F7D1763}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataSqlServer", "DataSqlServer\DataSqlServer.csproj", "{51E488D3-216F-4FB9-ACCE-A6F051A58C22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.SqlServer", "DataSqlServer\Data.SqlServer.csproj", "{51E488D3-216F-4FB9-ACCE-A6F051A58C22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataTransferObjects", "DataTransferObjects\DataTransferObjects.csproj", "{8C304C8E-3C76-4380-A9F4-AAEC7B4A9F33}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataTransferObjects", "DataTransferObjects\DataTransferObjects.csproj", "{8C304C8E-3C76-4380-A9F4-AAEC7B4A9F33}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{D3718BAB-5880-43C9-8298-D1CEC807AD0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{D3718BAB-5880-43C9-8298-D1CEC807AD0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extensions", "Extensions\Extensions.csproj", "{487A66F0-C22F-4DEE-85FF-416AC64E43FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Extensions", "Extensions\Extensions.csproj", "{487A66F0-C22F-4DEE-85FF-416AC64E43FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggerService", "LoggerService\LoggerService.csproj", "{B8EC7F33-2F0E-496A-90FB-BE26275FD6B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggerService", "LoggerService\LoggerService.csproj", "{B8EC7F33-2F0E-496A-90FB-BE26275FD6B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

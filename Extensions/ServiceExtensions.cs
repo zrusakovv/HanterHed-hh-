@@ -1,5 +1,5 @@
-﻿using DataAbstraction;
-using DataSqlServer;
+﻿using Data.Abstractions;
+using Data.SqlServer;
 using Entities;
 using LoggerService;
 using Microsoft.AspNetCore.Builder;

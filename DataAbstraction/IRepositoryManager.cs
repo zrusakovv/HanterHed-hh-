@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace DataAbstraction
+namespace Data.Abstractions
 {
     public interface IRepositoryManager
     {

@@ -1,5 +1,5 @@
 ﻿
-namespace DataAbstraction
+namespace Data.Abstractions
 {
     public interface ILoggerManager
     {

@@ -1,4 +1,4 @@
-﻿using DataAbstraction;
+﻿using Data.Abstractions;
 using NLog;
 
 namespace LoggerService

@@ -13,8 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DataAbstraction\DataAbstraction.csproj" />
-    <ProjectReference Include="..\DataSqlServer\DataSqlServer.csproj" />
+    <ProjectReference Include="..\DataAbstraction\Data.Abstractions.csproj" />
+    <ProjectReference Include="..\DataSqlServer\Data.SqlServer.csproj" />
     <ProjectReference Include="..\LoggerService\LoggerService.csproj" />
   </ItemGroup>
 
