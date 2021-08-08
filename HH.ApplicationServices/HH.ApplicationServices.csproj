@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HH.Data.Abstractions\HH.Data.Abstractions.csproj" />
+    <ProjectReference Include="..\HH.Infrastructure\HH.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

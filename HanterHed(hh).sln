@@ -3,19 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31515.178
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HanterHed(hh)", "HanterHed(hh)\HanterHed(hh).csproj", "{2CE8DA7F-4D01-4409-9F86-7E8EE9F87DDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HH.Api", "HH.Api\HH.Api.csproj", "{2CE8DA7F-4D01-4409-9F86-7E8EE9F87DDE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.Abstractions", "DataAbstraction\Data.Abstractions.csproj", "{0C7B6E4D-519A-469D-945B-20749F7D1763}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HH.Data.Abstractions", "HH.Data.Abstractions\HH.Data.Abstractions.csproj", "{0C7B6E4D-519A-469D-945B-20749F7D1763}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.SqlServer", "DataSqlServer\Data.SqlServer.csproj", "{51E488D3-216F-4FB9-ACCE-A6F051A58C22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HH.Data.SqlServer", "HH.Data.SqlServer\HH.Data.SqlServer.csproj", "{51E488D3-216F-4FB9-ACCE-A6F051A58C22}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataTransferObjects", "DataTransferObjects\DataTransferObjects.csproj", "{8C304C8E-3C76-4380-A9F4-AAEC7B4A9F33}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HH.DTO", "HH.DTO\HH.DTO.csproj", "{8C304C8E-3C76-4380-A9F4-AAEC7B4A9F33}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{D3718BAB-5880-43C9-8298-D1CEC807AD0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HH.Core", "HH.Core\HH.Core.csproj", "{FA6A539B-BFC9-4663-8AAD-EF71912C775B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Extensions", "Extensions\Extensions.csproj", "{487A66F0-C22F-4DEE-85FF-416AC64E43FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HH.Infrastructure", "HH.Infrastructure\HH.Infrastructure.csproj", "{518595A8-879D-4AD4-9F89-0E8D979D4B94}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggerService", "LoggerService\LoggerService.csproj", "{B8EC7F33-2F0E-496A-90FB-BE26275FD6B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HH.Data", "HH.Data\HH.Data.csproj", "{8A30E5FB-9244-493D-A1A9-492709A7808D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HH.ApplicationServices", "HH.ApplicationServices\HH.ApplicationServices.csproj", "{BAD73E83-9189-4FE4-9400-1E9330D0A70D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,18 +41,22 @@ Global
 		{8C304C8E-3C76-4380-A9F4-AAEC7B4A9F33}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C304C8E-3C76-4380-A9F4-AAEC7B4A9F33}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C304C8E-3C76-4380-A9F4-AAEC7B4A9F33}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D3718BAB-5880-43C9-8298-D1CEC807AD0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D3718BAB-5880-43C9-8298-D1CEC807AD0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D3718BAB-5880-43C9-8298-D1CEC807AD0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D3718BAB-5880-43C9-8298-D1CEC807AD0E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{487A66F0-C22F-4DEE-85FF-416AC64E43FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{487A66F0-C22F-4DEE-85FF-416AC64E43FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{487A66F0-C22F-4DEE-85FF-416AC64E43FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{487A66F0-C22F-4DEE-85FF-416AC64E43FA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B8EC7F33-2F0E-496A-90FB-BE26275FD6B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B8EC7F33-2F0E-496A-90FB-BE26275FD6B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B8EC7F33-2F0E-496A-90FB-BE26275FD6B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B8EC7F33-2F0E-496A-90FB-BE26275FD6B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA6A539B-BFC9-4663-8AAD-EF71912C775B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA6A539B-BFC9-4663-8AAD-EF71912C775B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA6A539B-BFC9-4663-8AAD-EF71912C775B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA6A539B-BFC9-4663-8AAD-EF71912C775B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{518595A8-879D-4AD4-9F89-0E8D979D4B94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{518595A8-879D-4AD4-9F89-0E8D979D4B94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{518595A8-879D-4AD4-9F89-0E8D979D4B94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{518595A8-879D-4AD4-9F89-0E8D979D4B94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A30E5FB-9244-493D-A1A9-492709A7808D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A30E5FB-9244-493D-A1A9-492709A7808D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A30E5FB-9244-493D-A1A9-492709A7808D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A30E5FB-9244-493D-A1A9-492709A7808D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAD73E83-9189-4FE4-9400-1E9330D0A70D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAD73E83-9189-4FE4-9400-1E9330D0A70D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAD73E83-9189-4FE4-9400-1E9330D0A70D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAD73E83-9189-4FE4-9400-1E9330D0A70D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
