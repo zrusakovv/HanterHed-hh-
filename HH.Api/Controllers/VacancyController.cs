@@ -163,44 +163,5 @@ namespace HH.Api.Controllers
 
             return NoContent();
         }
-
-        [HttpPatch("{id}")]
-        public async Task<IActionResult> PatchVacancyFromCompany(Guid companyId, Guid id,
-            [FromBody] JsonPatchDocument<VacancyForPatchDto> vacancy)
-        {
-            if (vacancy == null)
-            {
-                logger.LogError("Объект вакансии, отправленный от клиента, равен NULL.");
-                return BadRequest("Объект вакансии равен NULL");
-            }
-
-            var company = await repository.Company.GetCompanyAsync(companyId);
-
-            if (company == null)
-            {
-                logger.LogInfo($"Компания с идентификатором: {companyId} не существует в базе данных.");
-
-                return NotFound();
-            }
-
-            var vacancyEntity = await repository.Vacancy.GetVacancyAsync(companyId, id);
-
-            if (vacancyEntity == null)
-            {
-                logger.LogInfo($"Вакансии с id: {id} нет в базе данных.");
-
-                return NotFound();
-            }
-
-            var vacancyToPatch = mapper.Map<VacancyForPatchDto>(vacancyEntity);
-
-            vacancy.ApplyTo(vacancyToPatch);
-
-            mapper.Map(vacancyToPatch, vacancyEntity);
-
-            await repository.SaveAsync();
-
-            return NoContent();
-        }
     }
 }

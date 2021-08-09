@@ -163,43 +163,5 @@ namespace HH.Api.Controllers
             return NoContent();
         }
 
-        [HttpPatch("{id}")]
-        public async Task<IActionResult> PatchSummaryFromEmployee(Guid employeeId, Guid id,
-            [FromBody] JsonPatchDocument<SummaryForPatchDto> summary)
-        {
-            if (summary == null)
-            {
-                logger.LogError("Объект резюме, отправленный от клиента, равен NULL.");
-                return BadRequest("Объект резюме равен NULL");
-            }
-
-            var employee = await repository.Employee.GetEmployeeAsync(employeeId);
-
-            if (employee == null)
-            {
-                logger.LogInfo($"Сотрудник с идентификатором: {employeeId} не существует в базе данных.");
-
-                return NotFound();
-            }
-
-            var summaryEntity = await repository.Summary.GetSummaryAsync(employeeId, id);
-
-            if (summaryEntity == null)
-            {
-                logger.LogInfo($"Резюме с id: {id} нет в базе данных.");
-
-                return NotFound();
-            }
-
-            var summaryToPatch = mapper.Map<SummaryForPatchDto>(summaryEntity);
-
-            summary.ApplyTo(summaryToPatch);
-
-            mapper.Map(summaryToPatch, summaryEntity);
-
-            await repository.SaveAsync();
-
-            return NoContent();
-        }
     }
 }

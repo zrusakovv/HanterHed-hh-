@@ -1,6 +1,7 @@
 ﻿using HH.Data.Abstractions;
 using HH.Data.SqlServer;
 using HH.Infrastructure;
+using HH.Infrastructure.Mapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -37,6 +38,15 @@ namespace HH.Api
 
         public static void ConfigureRepositoryManager(this IServiceCollection services) =>
             services.AddScoped<IRepositoryManager, RepositoryManager>();
+
+        public static void AutoMapper(this IServiceCollection services)
+        {
+            services.AddAutoMapper(typeof(CompanyMappingProfile).Assembly);
+            services.AddAutoMapper(typeof(EmployeeMappingProfile).Assembly);
+            services.AddAutoMapper(typeof(SummaryMappingProfile).Assembly);
+            services.AddAutoMapper(typeof(VacancyMappingProfile).Assembly);
+        }
+            
 
     }
 }

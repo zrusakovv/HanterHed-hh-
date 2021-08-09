@@ -1,5 +1,8 @@
+using HH.ApplicationServices.Services.Implementations;
+using HH.ApplicationServices.Services.Interfaces;
 using HH.Core;
 using HH.Infrastructure;
+using HH.Infrastructure.Mapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -30,12 +33,13 @@ namespace HH.Api
             services.ConfigureSqlContext(Configuration);
             services.ConfigureRepositoryManager();
 
-            services.AddAutoMapper(typeof(MappingProfile).Assembly);
+            services.AutoMapper();
 
             services.AddControllers().AddNewtonsoftJson();
             services.AddSwaggerGen();
 
             services.AddTransient<ICompanyService, CompanyService>();
+            services.AddTransient<IEmployeeService, EmployeeService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger)
