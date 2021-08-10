@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HH.ApplicationServices.Services.Interfaces;
 using HH.Core;
 using HH.Data.Abstractions;
 using HH.DTO;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace HH.Api.Controllers
@@ -18,149 +20,59 @@ namespace HH.Api.Controllers
         private readonly IRepositoryManager repository;
         private readonly ILoggerManager logger;
         private readonly IMapper mapper;
-        public SummaryController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
+
+        private readonly ISummaryService summaryService;
+        public SummaryController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, ISummaryService summaryService)
         {
             this.repository = repository;
             this.logger = logger;
             this.mapper = mapper;
+            this.summaryService = summaryService;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetSummarysFromCompany(Guid employeeId)
         {
-            var employee = await repository.Employee.GetEmployeeAsync(employeeId);
+            var result = await summaryService.GetSummarysAsync(employeeId);
 
-            if (employee == null)
+            if (!result.Any())
             {
-                logger.LogInfo($"Сотрудник с идентификатором: {employeeId} не существует в базе данных.");
-
-                return NotFound();
+                return NoContent();
             }
 
-            var summarys = await repository.Summary.GetSummarysAsync(employeeId);
-
-            var summarysDto = mapper.Map<IEnumerable<SummaryDto>>(summarys);
-
-            return Ok(summarysDto);
+            return Ok(result);
         }
 
         [HttpGet("{id}", Name = "GetSummaryForEmployee")]
         public async Task<IActionResult> GetSummaryFromEmployee(Guid employeeId, Guid id)
         {
-            var employee = await repository.Employee.GetEmployeeAsync(employeeId);
+            var result = await summaryService.GetSummaryAsync(employeeId, id);
 
-            if (employee == null)
-            {
-                logger.LogInfo($"Сотрудник с идентификатором: {employeeId} не существует в базе данных.");
-
-                return NotFound();
-            }
-
-            var summaryDto = await repository.Summary.GetSummaryAsync(employeeId, id);
-
-            if (summaryDto == null)
-            {
-                logger.LogInfo($"Резюме с id: {id} нет в базе данных.");
-
-                return NotFound();
-            }
-
-            var vacancy = mapper.Map<SummaryDto>(summaryDto);
-
-            return Ok(vacancy);
+            return Ok(result);
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateSummaryFromEmployee(Guid employeeId, [FromBody] SummaryForCreationDto summary)
         {
-            if (summary == null)
-            {
-                logger.LogError("SummaryForCreationDto объект, отправленный от клиента, имеет значение null.");
+            var result = await summaryService.CreateSummaryAsync(employeeId, summary);
 
-                return BadRequest("SummaryForCreationDto объект равен нулю.");
-            }
-
-            var employee = await repository.Summary.GetSummarysAsync(employeeId);
-
-            if (employee == null)
-            {
-                logger.LogInfo($"Резюме с идентификатором: {employeeId} нет в базе данных.");
-
-                return NotFound();
-            }
-
-            var summaryEntity = mapper.Map<Summary>(summary);
-
-            repository.Summary.CreateSummaryForCompany(employeeId, summaryEntity);
-            await repository.SaveAsync();
-
-            var summaryToReturn = mapper.Map<SummaryDto>(summaryEntity);
-
-            return CreatedAtRoute("GetSummaryForEmployee", new
-            {
-                employeeId,
-                id = summaryToReturn
-            }, summaryToReturn);
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSummaryFromEmployee(Guid employeeId, Guid id)
         {
-            var employee = await repository.Employee.GetEmployeeAsync(employeeId);
+            await summaryService.DeleteSummaryAsync(employeeId, id);
 
-            if (employee == null)
-            {
-                logger.LogInfo($"Резюме с идентификатором: {employeeId} нет в базе данных.");
-
-                return NotFound();
-            }
-
-            var summaryForEmployee = await repository.Summary.GetSummaryAsync(employeeId, id);
-
-            if (summaryForEmployee == null)
-            {
-                logger.LogInfo($"Резюме с идентификатором: {employeeId} нет в базе данных.");
-
-                return NotFound();
-            }
-
-            repository.Summary.DeleteSummary(summaryForEmployee);
-            await repository.SaveAsync();
-
-            return NoContent();
+            return Ok();
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> PutSummaryFromEmployee(Guid employeeId, Guid id, [FromBody] SummaryForUpdateDto summary)
         {
-            if (summary == null)
-            {
-                logger.LogError("Объект SummaryForUpdateDto, отправленный клиентом, имеет значение NULL.");
-                return BadRequest("Объект SummaryForUpdateDto имеет значение NULL");
-            }
+            var result = await summaryService.UpdateSummaryAsync(employeeId, id, summary);
 
-            var employee = await repository.Employee.GetEmployeeAsync(employeeId);
-
-            if (employee == null)
-            {
-                logger.LogInfo($"Сотрудник с идентификатором: {employeeId} не существует в базе данных.");
-
-                return NotFound();
-            }
-
-            var summaryEntity = await repository.Summary.GetSummaryAsync(employeeId, id);
-
-            if (summaryEntity == null)
-            {
-                logger.LogInfo($"Сотрудник с идентификатором: {id} не существует в базе данных.");
-
-                return NotFound();
-            }
-
-            mapper.Map(summary, summaryEntity);
-            await repository.SaveAsync();
-
-            return NoContent();
+            return Ok(result);
         }
 
     }

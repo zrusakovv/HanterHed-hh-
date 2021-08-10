@@ -1,3 +1,4 @@
+using HanterHed_hh_.Extensions;
 using HH.ApplicationServices.Services.Implementations;
 using HH.ApplicationServices.Services.Interfaces;
 using HH.Core;
@@ -40,6 +41,8 @@ namespace HH.Api
 
             services.AddTransient<ICompanyService, CompanyService>();
             services.AddTransient<IEmployeeService, EmployeeService>();
+            services.AddTransient<ISummaryService, SummaryService>();
+            services.AddTransient<IVacancyService, VacancyService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger)
@@ -53,7 +56,13 @@ namespace HH.Api
                 app.UseHsts();
             }
 
-            app.ConfigureExceptionHandler(logger);
+            //app.ConfigureExceptionHandler(logger);
+            app.UseCustomErrorHandlingMiddleware();
+            //app.UseExceptionHandler(new ExceptionHandlerOptions
+            //{
+            //    ExceptionHandler = new JsonExceptionMiddleware(env).Invoke
+            //});
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCors("CorsPolicy");

@@ -1,4 +1,5 @@
-﻿using HH.Data.Abstractions;
+﻿using HanterHed_hh_.Extensions;
+using HH.Data.Abstractions;
 using HH.Data.SqlServer;
 using HH.Infrastructure;
 using HH.Infrastructure.Mapper;
@@ -46,7 +47,8 @@ namespace HH.Api
             services.AddAutoMapper(typeof(SummaryMappingProfile).Assembly);
             services.AddAutoMapper(typeof(VacancyMappingProfile).Assembly);
         }
-            
 
+        public static void UseCustomErrorHandlingMiddleware(this IApplicationBuilder app) =>
+            app.UseMiddleware<CustomErrorHandlingMiddleware>();
     }
 }
