@@ -21,7 +21,7 @@ namespace HH.ApplicationServices.Services.Implementations
             this.mapper = mapper;
         }
 
-        public async Task<IEnumerable<VacancyDto>> GetVacancys(Guid companyId)
+        public async Task<IEnumerable<VacancyDto>> GetVacancysAsync(Guid companyId)
         {
             var company = await repository.Company.GetCompanyAsync(companyId);
 
@@ -35,7 +35,7 @@ namespace HH.ApplicationServices.Services.Implementations
             return mapper.Map<IEnumerable<VacancyDto>>(vacancys);
         }
 
-        public async Task<VacancyDto> GetVacancy(Guid companyId, Guid id)
+        public async Task<VacancyDto> GetVacancyAsync(Guid companyId, Guid id)
         {
             var company = await repository.Company.GetCompanyAsync(companyId);
 
@@ -54,7 +54,7 @@ namespace HH.ApplicationServices.Services.Implementations
             return mapper.Map<VacancyDto>(vacancyDb);
         }
 
-        public async Task<Guid> CreateVacancy(Guid companyId, VacancyForCreationDto vacancy)
+        public async Task<Guid> CreateVacancyAsync(Guid companyId, VacancyForCreationDto vacancy)
         {
             var company = await repository.Vacancy.GetVacancysAsync(companyId);
 
@@ -74,7 +74,7 @@ namespace HH.ApplicationServices.Services.Implementations
             return vacancyToReturn.Id;
         }
 
-        public async Task DeleteVacancy(Guid companyId, Guid id)
+        public async Task DeleteVacancyAsync(Guid companyId, Guid id)
         {
             var company = await repository.Company.GetCompanyAsync(companyId);
 
@@ -95,7 +95,7 @@ namespace HH.ApplicationServices.Services.Implementations
             await repository.SaveAsync();
         }
 
-        public async Task<VacancyDto> PutVacancy(Guid companyId, Guid id, VacancyForUpdateDto vacancy)
+        public async Task<VacancyDto> PutVacancyAsync(Guid companyId, Guid id, VacancyForUpdateDto vacancy)
         {
             var company = await repository.Company.GetCompanyAsync(companyId);
 

@@ -56,7 +56,7 @@ namespace HH.Api
                 app.UseHsts();
             }
 
-            app.UseCustomErrorHandlingMiddleware();
+            app.UseCustomErrorHandlingMiddleware(logger);
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

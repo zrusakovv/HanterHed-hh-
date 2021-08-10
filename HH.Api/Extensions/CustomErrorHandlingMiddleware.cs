@@ -14,9 +14,11 @@ namespace HanterHed_hh_.Extensions
     public class CustomErrorHandlingMiddleware
     {
         private readonly RequestDelegate next;
-        public CustomErrorHandlingMiddleware(RequestDelegate next)
+        private readonly ILoggerManager logger;
+        public CustomErrorHandlingMiddleware(RequestDelegate next, ILoggerManager logger)
         {
             this.next = next;
+            this.logger = logger;
         }
         public async Task Invoke(HttpContext context, IWebHostEnvironment env)
         {
@@ -26,6 +28,8 @@ namespace HanterHed_hh_.Extensions
             }
             catch (Exception ex)
             {
+                logger.LogError($"Что-то пошло не так: {ex}");
+
                 await HandleExceptionAsync(context, ex, env);
             }
         }
@@ -33,14 +37,14 @@ namespace HanterHed_hh_.Extensions
         {
             var code = HttpStatusCode.InternalServerError;
 
-            if (ex is NotFoundException)
-            {
-                code = HttpStatusCode.NotFound;
-            }
-            else if (ex is ApplicationLayerException)
-            {
-                code = HttpStatusCode.BadRequest;
-            }
+            //if (ex is NotFoundException)
+            //{
+            //    code = HttpStatusCode.NotFound;
+            //}
+            //else if (ex is ApplicationLayerException)
+            //{
+            //    code = HttpStatusCode.BadRequest;
+            //}
             var includeDetails = env.IsEnvironment("Development");
             var title = includeDetails ? "An error occurred: " + ex.Message : "An error occurred";
             var details = includeDetails ? ex.ToString() : null;

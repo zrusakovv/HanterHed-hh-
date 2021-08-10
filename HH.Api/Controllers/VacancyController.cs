@@ -31,7 +31,7 @@ namespace HH.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetVacancys(Guid companyId)
         {
-            var result = await vacancyService.GetVacancys(companyId);
+            var result = await vacancyService.GetVacancysAsync(companyId);
 
             if (!result.Any())
             {
@@ -44,7 +44,7 @@ namespace HH.Api.Controllers
         [HttpGet("{id}", Name = "GetVacancyForCompany")]
         public async Task<IActionResult> GetVacancy(Guid companyId, Guid id)
         {
-            var result = await vacancyService.GetVacancy(companyId, id);
+            var result = await vacancyService.GetVacancyAsync(companyId, id);
 
             return Ok(result);
         }
@@ -52,7 +52,7 @@ namespace HH.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateVacancy(Guid companyId, [FromBody] VacancyForCreationDto vacancy)
         {
-            var result = await vacancyService.CreateVacancy(companyId, vacancy);
+            var result = await vacancyService.CreateVacancyAsync(companyId, vacancy);
 
             return Ok(result);
         }
@@ -60,7 +60,7 @@ namespace HH.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteVacancy(Guid companyId, Guid id)
         {
-            await vacancyService.DeleteVacancy(companyId, id);
+            await vacancyService.DeleteVacancyAsync(companyId, id);
 
             return Ok();
         }
@@ -68,7 +68,7 @@ namespace HH.Api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutVacancy(Guid companyId, Guid id, [FromBody] VacancyForUpdateDto vacancy)
         {
-            var result = await vacancyService.PutVacancy(companyId, id, vacancy);
+            var result = await vacancyService.PutVacancyAsync(companyId, id, vacancy);
 
             return Ok(result);
         }

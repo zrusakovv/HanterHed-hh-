@@ -48,7 +48,7 @@ namespace HH.Api
             services.AddAutoMapper(typeof(VacancyMappingProfile).Assembly);
         }
 
-        public static void UseCustomErrorHandlingMiddleware(this IApplicationBuilder app) =>
-            app.UseMiddleware<CustomErrorHandlingMiddleware>();
+        public static void UseCustomErrorHandlingMiddleware(this IApplicationBuilder app, ILoggerManager logger) =>
+            app.UseMiddleware<CustomErrorHandlingMiddleware>(logger);
     }
 }
