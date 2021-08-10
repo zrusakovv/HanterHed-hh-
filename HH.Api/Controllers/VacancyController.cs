@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
+using HH.ApplicationServices.Services.Interfaces;
 using HH.Core;
 using HH.Data.Abstractions;
 using HH.DTO;
 using HH.Infrastructure;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace HH.Api.Controllers
@@ -18,150 +18,59 @@ namespace HH.Api.Controllers
         private readonly IRepositoryManager repository;
         private readonly ILoggerManager logger;
         private readonly IMapper mapper;
-        public VacancyController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
+
+        private readonly IVacancyService vacancyService;
+        public VacancyController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, IVacancyService vacancyService)
         {
             this.repository = repository;
             this.logger = logger;
             this.mapper = mapper;
+            this.vacancyService = vacancyService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetVacancysFromCompany(Guid companyId)
+        public async Task<IActionResult> GetVacancys(Guid companyId)
         {
-            var company = await repository.Company.GetCompanyAsync(companyId);
+            var result = await vacancyService.GetVacancys(companyId);
 
-            if (company == null)
+            if (!result.Any())
             {
-                logger.LogInfo($"Компания с идентификатором: {companyId} не существует в базе данных.");
-
-                return NotFound();
+                return NoContent();
             }
 
-            var vacancys = await repository.Vacancy.GetVacancysAsync(companyId);
-
-            var vacancysDto = mapper.Map<IEnumerable<VacancyDto>>(vacancys);
-
-            return Ok(vacancysDto);
+            return Ok(result);
         }
 
         [HttpGet("{id}", Name = "GetVacancyForCompany")]
-        public async Task<IActionResult> GetVacancyFromCompany(Guid companyId, Guid id)
+        public async Task<IActionResult> GetVacancy(Guid companyId, Guid id)
         {
-            var company = await repository.Company.GetCompanyAsync(companyId);
+            var result = await vacancyService.GetVacancy(companyId, id);
 
-            if (company == null)
-            {
-                logger.LogInfo($"Компания с идентификатором: {companyId} не существует в базе данных.");
-
-                return NotFound();
-            }
-
-            var vacancyDb = await repository.Vacancy.GetVacancyAsync(companyId, id);
-
-            if (vacancyDb == null)
-            {
-                logger.LogInfo($"Вакансии с id: {id} нет в базе данных.");
-
-                return NotFound();
-            }
-
-            var vacancy = mapper.Map<VacancyDto>(vacancyDb);
-
-            return Ok(vacancy);
+            return Ok(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateVacancyFromCompany(Guid companyId, [FromBody] VacancyForCreationDto vacancy)
+        public async Task<IActionResult> CreateVacancy(Guid companyId, [FromBody] VacancyForCreationDto vacancy)
         {
-            if (vacancy == null)
-            {
-                logger.LogError("VacancyForCreationDto объект, отправленный от клиента, имеет значение null.");
+            var result = await vacancyService.CreateVacancy(companyId, vacancy);
 
-                return BadRequest("VacancyForCreationDto объект равен нулю.");
-            }
-
-            var company = await repository.Vacancy.GetVacancysAsync(companyId);
-
-            if (company == null)
-            {
-                logger.LogInfo($"Вакансии с идентификатором: {companyId} нет в базе данных.");
-
-                return NotFound();
-            }
-
-            var vacancyEntity = mapper.Map<Vacancy>(vacancy);
-
-            repository.Vacancy.CreateVacancyForCompany(companyId, vacancyEntity);
-            await repository.SaveAsync();
-
-            var vacancyToReturn = mapper.Map<VacancyDto>(vacancyEntity);
-
-            return CreatedAtRoute("GetVacancyForCompany", new
-            {
-                companyId,
-                id = vacancyToReturn
-            }, vacancyToReturn);
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteVacancyFromCompany(Guid companyId, Guid id)
+        public async Task<IActionResult> DeleteVacancy(Guid companyId, Guid id)
         {
-            var company = await repository.Company.GetCompanyAsync(companyId);
+            await vacancyService.DeleteVacancy(companyId, id);
 
-            if (company == null)
-            {
-                logger.LogInfo($"Вакансии с идентификатором: {companyId} нет в базе данных.");
-
-                return NotFound();
-            }
-
-            var vacancyForCompany = await repository.Vacancy.GetVacancyAsync(companyId, id);
-
-            if (vacancyForCompany == null)
-            {
-                logger.LogInfo($"Вакансии с идентификатором: {companyId} нет в базе данных.");
-
-                return NotFound();
-            }
-
-            repository.Vacancy.DeleteVacancy(vacancyForCompany);
-            await repository.SaveAsync();
-
-            return NoContent();
-
+            return Ok();
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutVacancyFromCompany(Guid companyId, Guid id, [FromBody] VacancyForUpdateDto vacancy)
+        public async Task<IActionResult> PutVacancy(Guid companyId, Guid id, [FromBody] VacancyForUpdateDto vacancy)
         {
-            if (vacancy == null)
-            {
-                logger.LogError("Объект VacancyForUpdateDto, отправленный клиентом, имеет значение NULL.");
-                return BadRequest("Объект VacancyForUpdateDto имеет значение NULL");
-            }
+            var result = await vacancyService.PutVacancy(companyId, id, vacancy);
 
-            var company = await repository.Company.GetCompanyAsync(companyId);
-
-            if (company == null)
-            {
-                logger.LogInfo($"Компания с идентификатором: {companyId} не существует в базе данных.");
-
-                return NotFound();
-            }
-
-            var vacancyEntity = await repository.Vacancy.GetVacancyAsync(companyId, id);
-
-            if (vacancyEntity == null)
-            {
-                logger.LogInfo($"Вакансия с идентификатором: {id} не существует в базе данных.");
-
-                return NotFound();
-            }
-
-            mapper.Map(vacancy, vacancyEntity);
-            await repository.SaveAsync();
-
-            return NoContent();
+            return Ok(result);
         }
     }
 }

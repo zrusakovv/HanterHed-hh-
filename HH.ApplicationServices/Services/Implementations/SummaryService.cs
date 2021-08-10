@@ -35,14 +35,14 @@ namespace HH.ApplicationServices.Services.Implementations
 
             if (employee == null)
             {
-                throw new ArgumentException("Employee not found.");
+                throw new InvalidOperationException($"Сотрудника с идентификатором: {employeeId} не существует в базе данных.");
             }
 
             var summaryDto = await repository.Summary.GetSummaryAsync(employeeId, id);
 
             if (summaryDto == null)
             {
-                throw new ArgumentException("Summary not found.");
+                throw new InvalidOperationException($"Резюме с идентификатором: {id} не существует в базе данных.");
             }
 
             return mapper.Map<SummaryDto>(summaryDto);
@@ -50,16 +50,11 @@ namespace HH.ApplicationServices.Services.Implementations
 
         public async Task<Guid> CreateSummaryAsync(Guid employeeId, SummaryForCreationDto summary, CancellationToken token = default)
         {
-            if (summary == null)
-            {
-                throw new ArgumentException("SummaryForCreationDto объект, отправленный от клиента, имеет значение null.");
-            }
-
             var employee = await repository.Summary.GetSummarysAsync(employeeId);
 
             if (employee == null)
             {
-                throw new ArgumentException("Резюме с идентификатором: {employeeId} нет в базе данных."); ;
+                throw new InvalidOperationException($"Резюме с идентификатором: {employeeId} не существует в базе данных."); ;
             }
 
             var summaryEntity = mapper.Map<Summary>(summary);
@@ -78,14 +73,14 @@ namespace HH.ApplicationServices.Services.Implementations
 
             if (employee == null)
             {
-                throw new InvalidOperationException($"Резюме с идентификатором: {employeeId} нет в базе данных.");
+                throw new InvalidOperationException($"Сотрудника с идентификатором: {employeeId} нет в базе данных.");
             }
 
             var summaryForEmployee = await repository.Summary.GetSummaryAsync(employeeId, id);
 
             if (summaryForEmployee == null)
             {
-                throw new ArgumentException($"Резюме с идентификатором: {employeeId} нет в базе данных.");
+                throw new InvalidOperationException($"Резюме с идентификатором: {employeeId} нет в базе данных.");
             }
 
             repository.Summary.DeleteSummary(summaryForEmployee);
@@ -99,14 +94,14 @@ namespace HH.ApplicationServices.Services.Implementations
 
             if (employee == null)
             {
-                throw new ArgumentException($"Сотрудник с идентификатором: {employeeId} не существует в базе данных.");
+                throw new InvalidOperationException($"Сотрудник с идентификатором: {employeeId} не существует в базе данных.");
             }
 
             var summaryEntity = await repository.Summary.GetSummaryAsync(employeeId, id);
 
             if (summaryEntity == null)
             {
-                throw new ArgumentException($"Резюме с идентификатором: {id} не существует в базе данных.");
+                throw new InvalidOperationException($"Резюме с идентификатором: {id} не существует в базе данных.");
             }
 
             mapper.Map(summary, summaryEntity);

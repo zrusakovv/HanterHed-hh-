@@ -56,12 +56,7 @@ namespace HH.Api
                 app.UseHsts();
             }
 
-            //app.ConfigureExceptionHandler(logger);
             app.UseCustomErrorHandlingMiddleware();
-            //app.UseExceptionHandler(new ExceptionHandlerOptions
-            //{
-            //    ExceptionHandler = new JsonExceptionMiddleware(env).Invoke
-            //});
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

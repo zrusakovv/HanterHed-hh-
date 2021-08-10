@@ -17,16 +17,9 @@ namespace HH.Api.Controllers
     [ApiController]
     public class SummaryController : ControllerBase
     {
-        private readonly IRepositoryManager repository;
-        private readonly ILoggerManager logger;
-        private readonly IMapper mapper;
-
         private readonly ISummaryService summaryService;
-        public SummaryController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, ISummaryService summaryService)
+        public SummaryController(ISummaryService summaryService)
         {
-            this.repository = repository;
-            this.logger = logger;
-            this.mapper = mapper;
             this.summaryService = summaryService;
         }
 

@@ -42,9 +42,7 @@ namespace HH.Core
 
             if (company == null)
             {
-                throw new InvalidOperationException("Company not found."); // Лучше использовать кастомное исключение,
-                                                                           // которое можно перехватить в ExceptionHandlingMiddleware 
-                                                                           // и вернуть корректный статус код.
+                throw new InvalidOperationException($"Компании с идентификатором: {id} не существует в базе данных.");
             }
 
             repository.Company.DeleteCompany(company); // Todo: token
@@ -64,7 +62,7 @@ namespace HH.Core
 
             if (company == null)
             {
-                throw new InvalidOperationException("Company not found.");
+                throw new InvalidOperationException($"Компании с идентификатором: {id} не существует в базе данных.");
             }
 
             return mapper.Map<CompanyDto>(company);
@@ -81,7 +79,7 @@ namespace HH.Core
 
             if (companyEntity == null)
             {
-                throw new InvalidOperationException("Company not found.");
+                throw new InvalidOperationException($"Компании с идентификатором: {id} не существует в базе данных.");
             }
 
             mapper.Map(payload, companyEntity);
