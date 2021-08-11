@@ -1,4 +1,5 @@
-﻿using HanterHed_hh_.Extensions;
+﻿using FluentValidation.AspNetCore;
+using HanterHed_hh_.Extensions;
 using HH.Data.Abstractions;
 using HH.Data.SqlServer;
 using HH.Infrastructure;
@@ -46,6 +47,16 @@ namespace HH.Api
             services.AddAutoMapper(typeof(EmployeeMappingProfile).Assembly);
             services.AddAutoMapper(typeof(SummaryMappingProfile).Assembly);
             services.AddAutoMapper(typeof(VacancyMappingProfile).Assembly);
+        }
+
+        public static void FluentValidation(this IServiceCollection services)
+        {
+            services.AddControllers()
+                .AddFluentValidation(s =>
+                {
+                    s.RegisterValidatorsFromAssemblyContaining<Startup>();
+                    s.DisableDataAnnotationsValidation = false;
+                });
         }
 
         public static void UseCustomErrorHandlingMiddleware(this IApplicationBuilder app, ILoggerManager logger) =>

@@ -3,15 +3,17 @@ using HH.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using System;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
 namespace HanterHed_hh_.Extensions
 {
-    public class CustomErrorHandlingMiddleware
+    public class CustomErrorHandlingMiddleware: ActionFilterAttribute
     {
         private readonly RequestDelegate next;
         private readonly ILoggerManager logger;
@@ -35,16 +37,8 @@ namespace HanterHed_hh_.Extensions
         }
         private static Task HandleExceptionAsync(HttpContext context, Exception ex, IWebHostEnvironment env)
         {
-            var code = HttpStatusCode.InternalServerError;
+            var code = HttpStatusCode.BadRequest;
 
-            //if (ex is NotFoundException)
-            //{
-            //    code = HttpStatusCode.NotFound;
-            //}
-            //else if (ex is ApplicationLayerException)
-            //{
-            //    code = HttpStatusCode.BadRequest;
-            //}
             var includeDetails = env.IsEnvironment("Development");
             var title = includeDetails ? "An error occurred: " + ex.Message : "An error occurred";
             var details = includeDetails ? ex.ToString() : null;

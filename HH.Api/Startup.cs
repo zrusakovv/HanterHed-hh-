@@ -34,6 +34,7 @@ namespace HH.Api
             services.ConfigureLoggerService();
             services.ConfigureSqlContext(Configuration);
             services.ConfigureRepositoryManager();
+            services.FluentValidation();
 
             services.AutoMapper();
 
