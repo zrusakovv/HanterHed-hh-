@@ -22,8 +22,6 @@ namespace HH.ApplicationServices.Services.Implementations
 
         public async Task<IEnumerable<SummaryDto>> GetSummarysAsync(Guid employeeId, CancellationToken token = default)
         {
-            //var employee = await repository.Employee.GetEmployeeAsync(employeeId, token);
-
             var summarys = await repository.Summary.GetSummarysAsync(employeeId, token);
 
             if (summarys == null)

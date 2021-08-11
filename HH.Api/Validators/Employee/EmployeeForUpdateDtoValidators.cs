@@ -8,10 +8,10 @@ namespace HanterHed_hh_.Validators
         public EmployeeForUpdateDtoValidators()
         {
             RuleFor(x => x.Name)
-                .NotEmpty();
+                .NotEmpty().MinimumLength(4).MaximumLength(10); ;
 
             RuleFor(x => x.Email)
-                .NotEmpty();
+                .NotEmpty().EmailAddress();
 
             RuleFor(x => x.City)
                 .NotEmpty();
@@ -20,10 +20,11 @@ namespace HanterHed_hh_.Validators
                 .NotEmpty();
 
             RuleFor(x => x.Phone)
-                .NotEmpty();
+                .NotEmpty().MinimumLength(10).MaximumLength(10); ;
 
             RuleFor(x => x.Photo)
                 .NotEmpty();
+
         }
     }
 }

@@ -8,15 +8,13 @@ namespace HanterHed_hh_.Validators
         public CompanyCreationDtoValidations()
         {
             RuleFor(x => x.Name)
-                .NotEmpty().MinimumLength(4).MaximumLength(10)
-                .WithMessage($"Имя является оязательным полем минимальная длина составляет");
+                .NotNull().NotEmpty().MinimumLength(4).MaximumLength(10);
 
             RuleFor(x => x.Address)
-                .NotEmpty().MinimumLength(4).MaximumLength(20)
-                .WithMessage($"Адрес является оязательным полем");
+                .NotNull().NotEmpty().MinimumLength(4).MaximumLength(20);
 
             RuleFor(x => x.Country)
-                .NotEmpty();
+                .NotNull().NotEmpty();
 
         }
     }

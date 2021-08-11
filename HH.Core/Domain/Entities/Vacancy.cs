@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HH.Core
@@ -8,14 +7,8 @@ namespace HH.Core
     {
         [Column("VacancyId")]
         public Guid Id { get; set; }
-
-        [Required(ErrorMessage = "Company name is a required field.")]
         public string Name { get; set; }
-
-        [Required(ErrorMessage = "Company price is a required field.")]
         public int Price { get; set; }
-
-        [Required(ErrorMessage = "Company address is a required field.")]
         public string Address { get; set; }
         public string RequiredWorkExperience { get; set; }
         public string Busyness { get; set; }

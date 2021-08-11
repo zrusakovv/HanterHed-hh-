@@ -7,7 +7,17 @@ namespace HanterHed_hh_.Validators
     {
         public VacancyForUpdateDtoValidators()
         {
-            
+            RuleFor(x => x.Name)
+                 .NotNull().NotEmpty();
+
+            RuleFor(x => x.Price)
+                .NotNull().NotEmpty();
+
+            RuleFor(x => x.Address)
+                .NotNull().NotEmpty();
+
+            RuleFor(x => x.Busyness)
+                .NotNull().NotEmpty();
         }
     }
 }

@@ -56,6 +56,11 @@ namespace HH.ApplicationServices.Services.Implementations
         {
             var employee = await repository.Employee.GetEmployeeAsync(id, token);
 
+            if (employee == null)
+            {
+                throw new InvalidOperationException($"Сотрудник с идентификатором: {id} не существует в базе данных.");
+            }
+
             return mapper.Map<EmployeeDto>(employee);
         }
 
