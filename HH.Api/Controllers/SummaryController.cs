@@ -1,13 +1,7 @@
-﻿using AutoMapper;
-using HH.ApplicationServices.Services.Interfaces;
-using HH.Core;
-using HH.Data.Abstractions;
+﻿using HH.ApplicationServices.Services.Interfaces;
 using HH.DTO;
-using HH.Infrastructure;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 

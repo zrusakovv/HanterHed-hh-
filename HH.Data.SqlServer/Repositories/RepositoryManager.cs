@@ -6,7 +6,7 @@ namespace HH.Data.SqlServer
 {
     public class RepositoryManager : IRepositoryManager
     {
-        private DbContext dbContext;
+        private readonly DbContext dbContext;
         private ICompanyRepository companyRepository;
         private IEmployeeRepository employeeRepository;
         private ISummaryRepository summaryRepository;
@@ -58,6 +58,6 @@ namespace HH.Data.SqlServer
         }
 
         public async Task SaveAsync(CancellationToken token = default) =>
-            await dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync(token);
     }
 }

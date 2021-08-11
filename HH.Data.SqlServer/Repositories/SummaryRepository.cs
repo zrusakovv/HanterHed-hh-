@@ -18,21 +18,21 @@ namespace HH.Data.SqlServer
         public void CreateSummaryForCompany(Guid summaryId, Summary summary, CancellationToken token = default)
         {
             summary.EmployeeId = summaryId;
-            Create(summary);
+            Create(summary, token);
         }
 
         public void DeleteSummary(Summary summary, CancellationToken token = default)
         {
-            Delete(summary);
+            Delete(summary, token);
         }
 
         public async Task<Summary> GetSummaryAsync(Guid summaryId, Guid id, CancellationToken token = default) =>
-            await FindByCondition(e => e.EmployeeId.Equals(summaryId) && e.Id.Equals(id))
-            .SingleOrDefaultAsync();
+            await FindByCondition(e => e.EmployeeId.Equals(summaryId) && e.Id.Equals(id), token)
+            .SingleOrDefaultAsync(token);
 
         public async Task<IEnumerable<Summary>> GetSummarysAsync(Guid employeeId, CancellationToken token = default) =>
-            await FindByCondition(e => e.EmployeeId.Equals(employeeId))
+            await FindByCondition(e => e.EmployeeId.Equals(employeeId), token)
             .OrderBy(e => e.FirstName)
-            .ToListAsync();
+            .ToListAsync(token);
     }
 }

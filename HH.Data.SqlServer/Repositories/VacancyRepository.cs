@@ -17,22 +17,22 @@ namespace HH.Data.SqlServer
         public void CreateVacancyForCompany(Guid companyId, Vacancy vacancy, CancellationToken token = default)
         {
             vacancy.CompanyId = companyId;
-            Create(vacancy);
+            Create(vacancy, token);
         }
 
         public void DeleteVacancy(Vacancy vacancy, CancellationToken token = default)
         {
-            Delete(vacancy);
+            Delete(vacancy, token);
         }
 
         public async Task<Vacancy> GetVacancyAsync(Guid companyId, Guid id, CancellationToken token = default) =>
-            await FindByCondition(e => e.CompanyId.Equals(companyId) && e.Id.Equals(id))
-            .SingleOrDefaultAsync();
+            await FindByCondition(e => e.CompanyId.Equals(companyId) && e.Id.Equals(id), token)
+            .SingleOrDefaultAsync(token);
 
         public async Task<IEnumerable<Vacancy>> GetVacancysAsync(Guid companyId, CancellationToken token = default) =>
-            await FindByCondition(e => e.CompanyId.Equals(companyId))
+            await FindByCondition(e => e.CompanyId.Equals(companyId), token)
             .OrderBy(e => e.Name)
-            .ToListAsync();
+            .ToListAsync(token);
 
     }
 

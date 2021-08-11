@@ -15,18 +15,18 @@ namespace HH.Data.SqlServer
             : base(dbContext) { }
 
         public void CreateCompany(Company company, CancellationToken token = default) =>
-            Create(company);
+            Create(company, token);
 
         public void DeleteCompany(Company company, CancellationToken token = default) =>
-            Delete(company);
+            Delete(company, token);
 
         public async Task<IEnumerable<Company>> GetAllCompaniesAsync(CancellationToken token = default) =>
-            await FindAll()
+            await FindAll(token)
             .OrderBy(c => c.Name)
-            .ToListAsync();
+            .ToListAsync(token);
 
         public async Task<Company> GetCompanyAsync(Guid companyId, CancellationToken token = default) =>
-            await FindByCondition(c => c.Id.Equals(companyId))
-            .SingleOrDefaultAsync();
+            await FindByCondition(c => c.Id.Equals(companyId), token)
+            .SingleOrDefaultAsync(token);
     }
 }

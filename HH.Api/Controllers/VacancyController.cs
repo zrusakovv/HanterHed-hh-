@@ -15,16 +15,9 @@ namespace HH.Api.Controllers
     [ApiController]
     public class VacancyController : ControllerBase
     {
-        private readonly IRepositoryManager repository;
-        private readonly ILoggerManager logger;
-        private readonly IMapper mapper;
-
         private readonly IVacancyService vacancyService;
-        public VacancyController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, IVacancyService vacancyService)
+        public VacancyController(IVacancyService vacancyService)
         {
-            this.repository = repository;
-            this.logger = logger;
-            this.mapper = mapper;
             this.vacancyService = vacancyService;
         }
 

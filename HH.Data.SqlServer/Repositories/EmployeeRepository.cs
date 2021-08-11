@@ -14,18 +14,18 @@ namespace HH.Data.SqlServer
         public EmployeeRepository(DbContext dbContext) : base(dbContext) { }
 
         public void CreateEmployee(Employee employee, CancellationToken token = default) =>
-            Create(employee);
+            Create(employee, token);
         public void DeleteEmployee(Employee employee, CancellationToken token = default) =>
-            Delete(employee);
+            Delete(employee, token);
 
         public async Task<IEnumerable<Employee>> GetAllEmployeesAsync(CancellationToken token = default) =>
-            await FindAll()
+            await FindAll(token)
             .OrderBy(c => c.Name)
-            .ToListAsync();
+            .ToListAsync(token);
 
         public async Task<Employee> GetEmployeeAsync(Guid employeeId, CancellationToken token = default) =>
-            await FindByCondition(c => c.Id.Equals(employeeId))
-            .SingleOrDefaultAsync();
+            await FindByCondition(c => c.Id.Equals(employeeId), token)
+            .SingleOrDefaultAsync(token);
 
 
     }
