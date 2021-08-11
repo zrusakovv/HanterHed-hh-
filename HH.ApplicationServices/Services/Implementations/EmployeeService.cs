@@ -29,8 +29,9 @@ namespace HH.ApplicationServices.Services.Implementations
 
             var employeeEntity = mapper.Map<Employee>(employee);
 
-            repository.Employee.CreateEmployee(employeeEntity);
-            await repository.SaveAsync();
+            repository.Employee.CreateEmployee(employeeEntity, token);
+
+            await repository.SaveAsync(token);
 
             var employeeToReturn = mapper.Map<EmployeeDto>(employeeEntity);
 
@@ -39,33 +40,28 @@ namespace HH.ApplicationServices.Services.Implementations
 
         public async Task DeleteEmployeeAsync(Guid id, CancellationToken token = default)
         {
-            var employee = await repository.Employee.GetEmployeeAsync(id);
+            var employee = await repository.Employee.GetEmployeeAsync(id, token);
 
             if(employee == null)
             {
                 throw new InvalidOperationException($"Сотрудник с идентификатором: {id} не существует в базе данных.");
             }
 
-            repository.Employee.DeleteEmployee(employee);
+            repository.Employee.DeleteEmployee(employee, token);
 
-            await repository.SaveAsync();
+            await repository.SaveAsync(token);
         }
 
         public async Task<EmployeeDto> GetEmployeeAsync(Guid id, CancellationToken token = default)
         {
-            var employee = await repository.Employee.GetEmployeeAsync(id);
-
-            if (employee == null)
-            {
-                throw new InvalidOperationException($"Сотрудник с идентификатором: {id} не существует в базе данных.");
-            }
+            var employee = await repository.Employee.GetEmployeeAsync(id, token);
 
             return mapper.Map<EmployeeDto>(employee);
         }
 
         public async Task<IEnumerable<EmployeeDto>> GetEmployeesAsync(CancellationToken token = default)
         {
-            var employees = await repository.Employee.GetAllEmployeesAsync();
+            var employees = await repository.Employee.GetAllEmployeesAsync(token);
 
             return mapper.Map<IEnumerable<EmployeeDto>>(employees);
         }
@@ -77,7 +73,7 @@ namespace HH.ApplicationServices.Services.Implementations
                 throw new ArgumentNullException(nameof(employee));
             }
 
-            var employeeEntity = await repository.Employee.GetEmployeeAsync(id);
+            var employeeEntity = await repository.Employee.GetEmployeeAsync(id, token);
 
             if (employeeEntity == null)
             {
@@ -86,7 +82,7 @@ namespace HH.ApplicationServices.Services.Implementations
 
             mapper.Map(employee, employeeEntity);
 
-            await repository.SaveAsync();
+            await repository.SaveAsync(token);
 
             return mapper.Map<EmployeeDto>(employeeEntity);
 

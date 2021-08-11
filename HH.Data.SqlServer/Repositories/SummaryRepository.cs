@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HH.Data.SqlServer
@@ -14,22 +15,22 @@ namespace HH.Data.SqlServer
             : base(dbContext) { }
 
 
-        public void CreateSummaryForCompany(Guid summaryId, Summary summary)
+        public void CreateSummaryForCompany(Guid summaryId, Summary summary, CancellationToken token = default)
         {
             summary.EmployeeId = summaryId;
             Create(summary);
         }
 
-        public void DeleteSummary(Summary summary)
+        public void DeleteSummary(Summary summary, CancellationToken token = default)
         {
             Delete(summary);
         }
 
-        public async Task<Summary> GetSummaryAsync(Guid summaryId, Guid id) =>
+        public async Task<Summary> GetSummaryAsync(Guid summaryId, Guid id, CancellationToken token = default) =>
             await FindByCondition(e => e.EmployeeId.Equals(summaryId) && e.Id.Equals(id))
             .SingleOrDefaultAsync();
 
-        public async Task<IEnumerable<Summary>> GetSummarysAsync(Guid employeeId) =>
+        public async Task<IEnumerable<Summary>> GetSummarysAsync(Guid employeeId, CancellationToken token = default) =>
             await FindByCondition(e => e.EmployeeId.Equals(employeeId))
             .OrderBy(e => e.FirstName)
             .ToListAsync();

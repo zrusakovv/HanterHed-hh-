@@ -28,6 +28,7 @@ namespace HH.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpClient();
             services.ConfigureCors();
             services.ConfigureIISIntegration();
             services.ConfigureLoggerService();

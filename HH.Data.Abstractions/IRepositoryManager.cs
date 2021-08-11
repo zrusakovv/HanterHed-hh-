@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace HH.Data.Abstractions
 {
@@ -8,6 +9,6 @@ namespace HH.Data.Abstractions
         IEmployeeRepository Employee { get; }
         ISummaryRepository Summary { get; }
         IVacancyRepository Vacancy { get; }
-        Task SaveAsync();
+        Task SaveAsync(CancellationToken token = default);
     }
 }

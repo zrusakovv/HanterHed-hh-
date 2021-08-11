@@ -30,35 +30,37 @@ namespace HH.Core
 
             var companyEntity = mapper.Map<Company>(payload);
 
-            repository.Company.CreateCompany(companyEntity); // Todo: token
-            await repository.SaveAsync(); // Todo: token
+            repository.Company.CreateCompany(companyEntity, token); // Todo: token
+
+            await repository.SaveAsync(token); // Todo: token
 
             return companyEntity.Id;
         }
 
         public async Task DeleteCompanyAsync(Guid id, CancellationToken token = default)
         {
-            var company = await repository.Company.GetCompanyAsync(id); // Todo: token
+            var company = await repository.Company.GetCompanyAsync(id, token); // Todo: token
 
             if (company == null)
             {
                 throw new InvalidOperationException($"Компании с идентификатором: {id} не существует в базе данных.");
             }
 
-            repository.Company.DeleteCompany(company); // Todo: token
-            await repository.SaveAsync(); // Todo: token
+            repository.Company.DeleteCompany(company, token); // Todo: token
+
+            await repository.SaveAsync(token); // Todo: token
         }
 
         public async Task<CompanyDto[]> GetCompaniesAsync(CancellationToken token = default)
         {
-            var companies = await repository.Company.GetAllCompaniesAsync(); // Todo: token
+            var companies = await repository.Company.GetAllCompaniesAsync(token); // Todo: token
 
             return mapper.Map<CompanyDto[]>(companies);
         }
         
         public async Task<CompanyDto> GetCompanyAsync(Guid id, CancellationToken token = default)
         {
-            var company = await repository.Company.GetCompanyAsync(id); // Todo: token
+            var company = await repository.Company.GetCompanyAsync(id, token); // Todo: token
 
             if (company == null)
             {
@@ -75,7 +77,7 @@ namespace HH.Core
                 throw new ArgumentNullException(nameof(payload));
             }
 
-            var companyEntity = await repository.Company.GetCompanyAsync(id); // Todo: token
+            var companyEntity = await repository.Company.GetCompanyAsync(id, token); // Todo: token
 
             if (companyEntity == null)
             {
@@ -83,7 +85,8 @@ namespace HH.Core
             }
 
             mapper.Map(payload, companyEntity);
-            await repository.SaveAsync(); // Todo: token
+
+            await repository.SaveAsync(token); // Todo: token
 
             return mapper.Map<CompanyDto>(companyEntity);
         }

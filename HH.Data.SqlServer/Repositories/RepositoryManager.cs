@@ -1,4 +1,5 @@
 ﻿using HH.Data.Abstractions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HH.Data.SqlServer
@@ -56,7 +57,7 @@ namespace HH.Data.SqlServer
             }
         }
 
-        public async Task SaveAsync() =>
+        public async Task SaveAsync(CancellationToken token = default) =>
             await dbContext.SaveChangesAsync();
     }
 }

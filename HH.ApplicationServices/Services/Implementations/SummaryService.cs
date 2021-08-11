@@ -22,23 +22,28 @@ namespace HH.ApplicationServices.Services.Implementations
 
         public async Task<IEnumerable<SummaryDto>> GetSummarysAsync(Guid employeeId, CancellationToken token = default)
         {
-            var employee = await repository.Employee.GetEmployeeAsync(employeeId);
+            //var employee = await repository.Employee.GetEmployeeAsync(employeeId, token);
 
-            var summarys = await repository.Summary.GetSummarysAsync(employeeId);
+            var summarys = await repository.Summary.GetSummarysAsync(employeeId, token);
+
+            if (summarys == null)
+            {
+                throw new InvalidOperationException($"Сотрудника с идентификатором: {employeeId} не существует в базе данных.");
+            }
 
             return mapper.Map<IEnumerable<SummaryDto>>(summarys);
         }
 
         public async Task<SummaryDto> GetSummaryAsync(Guid employeeId, Guid id, CancellationToken token = default)
         {
-            var employee = await repository.Employee.GetEmployeeAsync(employeeId);
+            var employee = await repository.Employee.GetEmployeeAsync(employeeId, token);
 
             if (employee == null)
             {
                 throw new InvalidOperationException($"Сотрудника с идентификатором: {employeeId} не существует в базе данных.");
             }
 
-            var summaryDto = await repository.Summary.GetSummaryAsync(employeeId, id);
+            var summaryDto = await repository.Summary.GetSummaryAsync(employeeId, id, token);
 
             if (summaryDto == null)
             {
@@ -50,7 +55,7 @@ namespace HH.ApplicationServices.Services.Implementations
 
         public async Task<Guid> CreateSummaryAsync(Guid employeeId, SummaryForCreationDto summary, CancellationToken token = default)
         {
-            var employee = await repository.Summary.GetSummarysAsync(employeeId);
+            var employee = await repository.Summary.GetSummarysAsync(employeeId, token);
 
             if (employee == null)
             {
@@ -59,8 +64,9 @@ namespace HH.ApplicationServices.Services.Implementations
 
             var summaryEntity = mapper.Map<Summary>(summary);
 
-            repository.Summary.CreateSummaryForCompany(employeeId, summaryEntity);
-            await repository.SaveAsync();
+            repository.Summary.CreateSummaryForCompany(employeeId, summaryEntity, token);
+
+            await repository.SaveAsync(token);
 
             var summaryToReturn = mapper.Map<SummaryDto>(summaryEntity);
 
@@ -69,35 +75,35 @@ namespace HH.ApplicationServices.Services.Implementations
 
         public async Task DeleteSummaryAsync(Guid employeeId, Guid id, CancellationToken token = default)
         {
-            var employee = await repository.Employee.GetEmployeeAsync(employeeId);
+            var employee = await repository.Employee.GetEmployeeAsync(employeeId, token);
 
             if (employee == null)
             {
                 throw new InvalidOperationException($"Сотрудника с идентификатором: {employeeId} нет в базе данных.");
             }
 
-            var summaryForEmployee = await repository.Summary.GetSummaryAsync(employeeId, id);
+            var summaryForEmployee = await repository.Summary.GetSummaryAsync(employeeId, id, token);
 
             if (summaryForEmployee == null)
             {
                 throw new InvalidOperationException($"Резюме с идентификатором: {employeeId} нет в базе данных.");
             }
 
-            repository.Summary.DeleteSummary(summaryForEmployee);
+            repository.Summary.DeleteSummary(summaryForEmployee, token);
 
-            await repository.SaveAsync();
+            await repository.SaveAsync(token);
         }
 
         public async Task<SummaryDto> UpdateSummaryAsync(Guid employeeId, Guid id, SummaryForUpdateDto summary, CancellationToken token = default)
         {
-            var employee = await repository.Employee.GetEmployeeAsync(employeeId);
+            var employee = await repository.Employee.GetEmployeeAsync(employeeId, token);
 
             if (employee == null)
             {
                 throw new InvalidOperationException($"Сотрудник с идентификатором: {employeeId} не существует в базе данных.");
             }
 
-            var summaryEntity = await repository.Summary.GetSummaryAsync(employeeId, id);
+            var summaryEntity = await repository.Summary.GetSummaryAsync(employeeId, id, token);
 
             if (summaryEntity == null)
             {
@@ -106,7 +112,7 @@ namespace HH.ApplicationServices.Services.Implementations
 
             mapper.Map(summary, summaryEntity);
 
-            await repository.SaveAsync();
+            await repository.SaveAsync(token);
 
             return mapper.Map<SummaryDto>(summaryEntity);
         }
