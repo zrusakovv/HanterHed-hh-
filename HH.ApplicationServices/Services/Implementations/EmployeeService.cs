@@ -44,7 +44,7 @@ namespace HH.ApplicationServices.Services.Implementations
 
             if(employee == null)
             {
-                throw new InvalidOperationException($"Сотрудник с идентификатором: {id} не существует в базе данных.");
+                throw new ArgumentNullException($"Сотрудник с идентификатором: {id} не существует в базе данных.");
             }
 
             repository.Employee.DeleteEmployee(employee, token);
@@ -58,7 +58,7 @@ namespace HH.ApplicationServices.Services.Implementations
 
             if (employee == null)
             {
-                throw new InvalidOperationException($"Сотрудник с идентификатором: {id} не существует в базе данных.");
+                throw new ArgumentNullException($"Сотрудник с идентификатором: {id} не существует в базе данных.");
             }
 
             return mapper.Map<EmployeeDto>(employee);
@@ -82,7 +82,7 @@ namespace HH.ApplicationServices.Services.Implementations
 
             if (employeeEntity == null)
             {
-                throw new InvalidOperationException($"Сотрудник с идентификатором: {id} не существует в базе данных.");
+                throw new ArgumentNullException($"Сотрудник с идентификатором: {id} не существует в базе данных.");
             }
 
             mapper.Map(employee, employeeEntity);

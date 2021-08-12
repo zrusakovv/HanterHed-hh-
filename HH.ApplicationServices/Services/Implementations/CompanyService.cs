@@ -30,41 +30,41 @@ namespace HH.Core
 
             var companyEntity = mapper.Map<Company>(payload);
 
-            repository.Company.CreateCompany(companyEntity, token); // Todo: token
+            repository.Company.CreateCompany(companyEntity, token);
 
-            await repository.SaveAsync(token); // Todo: token
+            await repository.SaveAsync(token);
 
             return companyEntity.Id;
         }
 
         public async Task DeleteCompanyAsync(Guid id, CancellationToken token = default)
         {
-            var company = await repository.Company.GetCompanyAsync(id, token); // Todo: token
+            var company = await repository.Company.GetCompanyAsync(id, token);
 
             if (company == null)
             {
-                throw new InvalidOperationException($"Компании с идентификатором: {id} не существует в базе данных.");
+                throw new ArgumentNullException($"Компании с идентификатором: {id} не существует в базе данных.");
             }
 
-            repository.Company.DeleteCompany(company, token); // Todo: token
+            repository.Company.DeleteCompany(company, token);
 
-            await repository.SaveAsync(token); // Todo: token
+            await repository.SaveAsync(token);
         }
 
         public async Task<CompanyDto[]> GetCompaniesAsync(CancellationToken token = default)
         {
-            var companies = await repository.Company.GetAllCompaniesAsync(token); // Todo: token
+            var companies = await repository.Company.GetAllCompaniesAsync(token);
 
             return mapper.Map<CompanyDto[]>(companies);
         }
         
         public async Task<CompanyDto> GetCompanyAsync(Guid id, CancellationToken token = default)
         {
-            var company = await repository.Company.GetCompanyAsync(id, token); // Todo: token
+            var company = await repository.Company.GetCompanyAsync(id, token);
 
             if (company == null)
             {
-                throw new InvalidOperationException($"Компании с идентификатором: {id} не существует в базе данных.");
+                throw new ArgumentNullException($"Компании с идентификатором: {id} не существует в базе данных.");
             }
 
             return mapper.Map<CompanyDto>(company);
@@ -77,16 +77,16 @@ namespace HH.Core
                 throw new ArgumentNullException(nameof(payload));
             }
 
-            var companyEntity = await repository.Company.GetCompanyAsync(id, token); // Todo: token
+            var companyEntity = await repository.Company.GetCompanyAsync(id, token);
 
             if (companyEntity == null)
             {
-                throw new InvalidOperationException($"Компании с идентификатором: {id} не существует в базе данных.");
+                throw new ArgumentNullException($"Компании с идентификатором: {id} не существует в базе данных.");
             }
 
             mapper.Map(payload, companyEntity);
 
-            await repository.SaveAsync(token); // Todo: token
+            await repository.SaveAsync(token);
 
             return mapper.Map<CompanyDto>(companyEntity);
         }

@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace HanterHed_hh_.Extensions
 {
-    public class CustomErrorHandlingMiddleware: ActionFilterAttribute
+    public class GlobalExceptionHandling
     {
         private readonly RequestDelegate next;
         private readonly ILoggerManager logger;
-        public CustomErrorHandlingMiddleware(RequestDelegate next, ILoggerManager logger)
+        public GlobalExceptionHandling(RequestDelegate next, ILoggerManager logger)
         {
             this.next = next;
             this.logger = logger;

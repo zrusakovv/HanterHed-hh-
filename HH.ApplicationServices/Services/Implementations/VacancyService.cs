@@ -28,7 +28,7 @@ namespace HH.ApplicationServices.Services.Implementations
 
             if (company == null)
             {
-                throw new InvalidOperationException($"Компания с идентификатором: {companyId} не существует в базе данных.");
+                throw new ArgumentNullException($"Компания с идентификатором: {companyId} не существует в базе данных.");
             }
 
             var vacancys = await repository.Vacancy.GetVacancysAsync(companyId, token);
@@ -42,14 +42,14 @@ namespace HH.ApplicationServices.Services.Implementations
 
             if (company == null)
             {
-                throw new InvalidOperationException($"Компания с идентификатором: {companyId} не существует в базе данных.");
+                throw new ArgumentNullException($"Компания с идентификатором: {companyId} не существует в базе данных.");
             }
 
             var vacancyDb = await repository.Vacancy.GetVacancyAsync(companyId, id, token);
 
             if (vacancyDb == null)
             {
-                throw new InvalidOperationException($"Вакансии с id: {id} нет в базе данных.");
+                throw new ArgumentNullException($"Вакансии с id: {id} нет в базе данных.");
             }
 
             return mapper.Map<VacancyDto>(vacancyDb);
@@ -61,7 +61,7 @@ namespace HH.ApplicationServices.Services.Implementations
 
             if (company == null)
             {
-                throw new InvalidOperationException($"Вакансии с идентификатором: {companyId} нет в базе данных.");
+                throw new ArgumentNullException($"Вакансии с идентификатором: {companyId} нет в базе данных.");
             }
 
             var vacancyEntity = mapper.Map<Vacancy>(vacancy);
@@ -81,14 +81,14 @@ namespace HH.ApplicationServices.Services.Implementations
 
             if (company == null)
             {
-                throw new InvalidOperationException($"Компании с идентификатором: {companyId} нет в базе данных.");
+                throw new ArgumentNullException($"Компании с идентификатором: {companyId} нет в базе данных.");
             }
 
             var vacancyForCompany = await repository.Vacancy.GetVacancyAsync(companyId, id, token);
 
             if (vacancyForCompany == null)
             {
-                throw new InvalidOperationException($"Вакансии с идентификатором: {companyId} нет в базе данных.");
+                throw new ArgumentNullException($"Вакансии с идентификатором: {companyId} нет в базе данных.");
             }
 
             repository.Vacancy.DeleteVacancy(vacancyForCompany, token);
@@ -102,14 +102,14 @@ namespace HH.ApplicationServices.Services.Implementations
 
             if (company == null)
             {
-                throw new InvalidOperationException($"Компания с идентификатором: {companyId} не существует в базе данных.");
+                throw new ArgumentNullException($"Компания с идентификатором: {companyId} не существует в базе данных.");
             }
 
             var vacancyEntity = await repository.Vacancy.GetVacancyAsync(companyId, id, token);
 
             if (vacancyEntity == null)
             {
-                throw new InvalidOperationException($"Вакансия с идентификатором: {id} не существует в базе данных.");
+                throw new ArgumentNullException($"Вакансия с идентификатором: {id} не существует в базе данных.");
             }
 
             mapper.Map(vacancy, vacancyEntity);

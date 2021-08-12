@@ -60,6 +60,6 @@ namespace HH.Api
         }
 
         public static void UseCustomErrorHandlingMiddleware(this IApplicationBuilder app, ILoggerManager logger) =>
-            app.UseMiddleware<CustomErrorHandlingMiddleware>(logger);
+            app.UseMiddleware<GlobalExceptionHandling>(logger);
     }
 }
