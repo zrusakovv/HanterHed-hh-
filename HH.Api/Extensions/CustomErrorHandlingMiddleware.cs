@@ -1,5 +1,4 @@
-﻿using HanterHed_hh_.ErrorModel;
-using HH.Infrastructure;
+﻿using HH.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +6,6 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using System;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
