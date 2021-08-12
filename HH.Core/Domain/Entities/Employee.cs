@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using HH.Core.Domain;
 
 namespace HH.Core
 {
-    public class Employee
+    public class Employee : IEntity
     {
         [Column("EmployeeId")]
         public Guid Id { get; set; }

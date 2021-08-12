@@ -1,9 +1,7 @@
-using HanterHed_hh_.Extensions;
 using HH.ApplicationServices.Services.Implementations;
 using HH.ApplicationServices.Services.Interfaces;
 using HH.Core;
 using HH.Infrastructure;
-using HH.Infrastructure.Mapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -28,12 +26,10 @@ namespace HH.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddHttpClient();
             services.ConfigureCors();
-            services.ConfigureIISIntegration();
             services.ConfigureLoggerService();
             services.ConfigureSqlContext(Configuration);
-            services.ConfigureRepositoryManager();
+            services.ConfigureRepository();
             services.FluentValidation();
 
             services.AutoMapper();
@@ -57,9 +53,9 @@ namespace HH.Api
             {
                 app.UseHsts();
             }
-
-            app.UseCustomErrorHandlingMiddleware(logger);
-
+            
+            app.UseCustomErrorHandlingMiddleware();
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCors("CorsPolicy");

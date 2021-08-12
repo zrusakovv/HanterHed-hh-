@@ -13,5 +13,7 @@ namespace HH.DTO
         public string Country { get; set; }
 
         public string Description { get; set; }
+        
+        public VacancyDto[] Vacancies { get; set; }
     }
 }

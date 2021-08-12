@@ -4,18 +4,16 @@ using HH.DTO;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace HH.Core
 {
     public class CompanyService : ICompanyService
     {
-        private readonly IRepositoryManager repository;
+        private readonly IRepository repository;
         private readonly IMapper mapper;
 
-        public CompanyService
-        (
-            IRepositoryManager repository,
-            IMapper mapper)
+        public CompanyService(IRepository repository, IMapper mapper)
         {
             this.repository = repository;
             this.mapper = mapper;
@@ -30,41 +28,40 @@ namespace HH.Core
 
             var companyEntity = mapper.Map<Company>(payload);
 
-            repository.Company.CreateCompany(companyEntity, token);
-
-            await repository.SaveAsync(token);
+            await repository.Create(companyEntity, token);
 
             return companyEntity.Id;
         }
 
         public async Task DeleteCompanyAsync(Guid id, CancellationToken token = default)
         {
-            var company = await repository.Company.GetCompanyAsync(id, token);
+            var company = await repository.SingleOrDefaultAsync<Company>(x => x.Id == id, token: token);
 
             if (company == null)
             {
-                throw new ArgumentNullException($"Компании с идентификатором: {id} не существует в базе данных.");
+                throw new EntityNotFoundException($"Компании с идентификатором: {id} не существует в базе данных.");
             }
 
-            repository.Company.DeleteCompany(company, token);
-
-            await repository.SaveAsync(token);
+            await repository.DeleteAsync(company, token);
         }
 
         public async Task<CompanyDto[]> GetCompaniesAsync(CancellationToken token = default)
         {
-            var companies = await repository.Company.GetAllCompaniesAsync(token);
+            var companies = await repository.FindAll<Company>().ToListAsync(token);
 
             return mapper.Map<CompanyDto[]>(companies);
         }
         
         public async Task<CompanyDto> GetCompanyAsync(Guid id, CancellationToken token = default)
         {
-            var company = await repository.Company.GetCompanyAsync(id, token);
+            var company = await repository.SingleOrDefaultAsync<Company>(
+                x => x.Id == id,
+                x => x.Vacancies,
+                token);
 
             if (company == null)
             {
-                throw new ArgumentNullException($"Компании с идентификатором: {id} не существует в базе данных.");
+                throw new EntityNotFoundException($"Компании с идентификатором: {id} не существует в базе данных.");
             }
 
             return mapper.Map<CompanyDto>(company);
@@ -77,16 +74,16 @@ namespace HH.Core
                 throw new ArgumentNullException(nameof(payload));
             }
 
-            var companyEntity = await repository.Company.GetCompanyAsync(id, token);
+            var companyEntity = await repository.SingleOrDefaultAsync<Company>(x => x.Id == id, token: token);
 
             if (companyEntity == null)
             {
-                throw new ArgumentNullException($"Компании с идентификатором: {id} не существует в базе данных.");
+                throw new EntityNotFoundException($"Компании с идентификатором: {id} не существует в базе данных.");
             }
 
             mapper.Map(payload, companyEntity);
 
-            await repository.SaveAsync(token);
+            await repository.Update(companyEntity, token);
 
             return mapper.Map<CompanyDto>(companyEntity);
         }

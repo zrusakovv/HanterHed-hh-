@@ -1,9 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using HH.Core.Domain;
 
 namespace HH.Core
 {
-    public class Vacancy
+    public class Vacancy : IEntity
     {
         [Column("VacancyId")]
         public Guid Id { get; set; }

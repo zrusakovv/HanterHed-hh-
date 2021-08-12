@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+using HH.Core.Domain;
 
 namespace HH.Core
 {
-    public class Company
+    public class Company : IEntity
     {
-        [Column("CompanyId")]
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }

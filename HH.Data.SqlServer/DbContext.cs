@@ -1,15 +1,19 @@
 ﻿using HH.Core;
 using Microsoft.EntityFrameworkCore;
 
-namespace HH.Data
+namespace HH.Data.SqlServer
 {
     public class DbContext : Microsoft.EntityFrameworkCore.DbContext
     {
-        public DbContext(DbContextOptions options)
-            : base(options) { }
+        public DbContext(DbContextOptions options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Company>(entity =>
+            {
+                entity.Property(x => x.Id).HasColumnName("CompanyId");
+            });
+
             modelBuilder.ApplyConfiguration(new CompanyConfiguration());
             modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
             modelBuilder.ApplyConfiguration(new SummaryConfiguration());

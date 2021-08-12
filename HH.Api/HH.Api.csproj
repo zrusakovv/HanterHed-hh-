@@ -32,4 +32,9 @@
     <ProjectReference Include="..\HH.Infrastructure\HH.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ErrorModel" />
+    <Folder Include="ErrorModel\" />
+  </ItemGroup>
+
 </Project>
