@@ -21,11 +21,6 @@ namespace HH.Core
 
         public async Task<Guid> CreateCompanyAsync(CompanyForCreationDto payload, CancellationToken token = default)
         {
-            if (payload == null)
-            {
-                throw new ArgumentNullException();
-            }
-
             var companyEntity = mapper.Map<Company>(payload);
 
             await repository.Create(companyEntity, token);
@@ -69,12 +64,10 @@ namespace HH.Core
 
         public async Task<CompanyDto> UpdateCompanyAsync(Guid id, CompanyForUpdateDto payload, CancellationToken token = default)
         {
-            if (payload == null)
-            {
-                throw new ArgumentNullException(nameof(payload));
-            }
-
-            var companyEntity = await repository.SingleOrDefaultAsync<Company>(x => x.Id == id, token: token);
+            var companyEntity = await repository.SingleOrDefaultAsync<Company>(
+                x => x.Id == id, 
+                token: token
+                );
 
             if (companyEntity == null)
             {

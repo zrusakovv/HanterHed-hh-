@@ -32,7 +32,7 @@ namespace HH.Api
             services.AddDbContext<DbContext>(opts =>
                 opts.UseSqlServer(
                     configuration.GetConnectionString("sqlConnection"),
-                    builder => builder.MigrationsAssembly(typeof(DbContext).Assembly.FullName)
+                    builder => builder.MigrationsAssembly("HH.Api")
                 )
             );
         }

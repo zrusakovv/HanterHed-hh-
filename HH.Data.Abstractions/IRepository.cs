@@ -12,7 +12,9 @@ namespace HH.Data.Abstractions
         IQueryable<T> FindAll<T>() 
             where T : class, IEntity;
 
-        IQueryable<T> FindByCondition<T>(Expression<Func<T, bool>> expression, Expression<Func<T, object>> include)
+         IQueryable<T> FindByCondition<T>(
+             Expression<Func<T, bool>> expression, 
+             Expression<Func<T, object>> include)
             where T : class, IEntity;
 
         Task<T> SingleOrDefaultAsync<T>(
@@ -20,7 +22,7 @@ namespace HH.Data.Abstractions
             Expression<Func<T, object>> include = default,
             CancellationToken token = default)
             where T : class, IEntity;
-        
+
         Task Create<T>(T entity, CancellationToken token = default)
             where T : class, IEntity;
 

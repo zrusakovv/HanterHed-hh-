@@ -6,7 +6,6 @@ namespace HH.Core
 {
     public class Summary : IEntity
     {
-        [Column("SummaryId")]
         public Guid Id { get; set; }
         public string Photo { get; set; }
         public string FirstName { get; set; }

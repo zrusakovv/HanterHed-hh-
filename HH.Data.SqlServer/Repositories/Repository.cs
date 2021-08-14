@@ -53,6 +53,8 @@ namespace HH.Data.SqlServer
             where T : class, IEntity
         {
             await dbContext.AddAsync(entity, token);
+            
+            await dbContext.SaveChangesAsync(token);
         }
 
         public async Task Update<T>(T entity, CancellationToken token = default)

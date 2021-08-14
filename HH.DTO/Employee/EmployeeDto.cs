@@ -11,5 +11,6 @@ namespace HH.DTO
         public string Country { get; set; }
         public string Phone { get; set; }
         public string Photo { get; set; }
+        public SummaryDto[] Summaries { get; set; }
     }
 }

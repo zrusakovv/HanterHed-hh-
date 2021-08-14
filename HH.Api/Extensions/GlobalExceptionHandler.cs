@@ -42,7 +42,7 @@ namespace HH.Api
 
                 var details = new ProblemDetails
                 {
-                    Detail = "kek"
+                    Detail = exception.Message
                 };
 
                 await context.Response.WriteAsJsonAsync(details);

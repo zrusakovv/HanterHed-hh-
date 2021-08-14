@@ -13,6 +13,21 @@ namespace HH.Data.SqlServer
             {
                 entity.Property(x => x.Id).HasColumnName("CompanyId");
             });
+            
+            modelBuilder.Entity<Employee>(entity =>
+            {
+                entity.Property(x => x.Id).HasColumnName("EmployeeId");
+            });
+            
+            modelBuilder.Entity<Summary>(entity =>
+            {
+                entity.Property(x => x.Id).HasColumnName("SummaryId");
+            });
+            
+            modelBuilder.Entity<Vacancy>(entity =>
+            {
+                entity.Property(x => x.Id).HasColumnName("VacancyId");
+            });
 
             modelBuilder.ApplyConfiguration(new CompanyConfiguration());
             modelBuilder.ApplyConfiguration(new EmployeeConfiguration());

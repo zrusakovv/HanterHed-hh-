@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace HH.ApplicationServices.Services.Implementations
 {
@@ -22,79 +23,74 @@ namespace HH.ApplicationServices.Services.Implementations
 
         public async Task<Guid> CreateEmployeeAsync(EmployeeForCreationDto employee, CancellationToken token = default)
         {
-            // if (employee == null)
-            // {
-            //     throw new ArgumentNullException();
-            // }
-            //
-            // var employeeEntity = mapper.Map<Employee>(employee);
-            //
-            // repository.Employee.CreateEmployee(employeeEntity, token);
-            //
-            // await repository.SaveAsync(token);
-            //
-            // var employeeToReturn = mapper.Map<EmployeeDto>(employeeEntity);
-            //
-            // return employeeToReturn.Id;
-            return Guid.NewGuid();
+            if (employee == null)
+            {
+                throw new ArgumentNullException();
+            }
+            
+            var employeeEntity = mapper.Map<Employee>(employee);
+            
+            await repository.Create(employeeEntity, token);
+            
+            var employeeToReturn = mapper.Map<EmployeeDto>(employeeEntity);
+            
+            return employeeToReturn.Id;
         }
 
         public async Task DeleteEmployeeAsync(Guid id, CancellationToken token = default)
         {
-            // var employee = await repository.Employee.GetEmployeeAsync(id, token);
-            //
-            // if(employee == null)
-            // {
-            //     throw new EntityNotFoundException($"Сотрудник с идентификатором: {id} не существует в базе данных.");
-            // }
-            //
-            // repository.Employee.DeleteEmployee(employee, token);
-            //
-            // await repository.SaveAsync(token);
+            var employee = await repository.SingleOrDefaultAsync<Employee>(x=>x.Id == id, token: token);
+            
+            if(employee == null)
+            {
+                throw new EntityNotFoundException($"Сотрудник с идентификатором: {id} не существует в базе данных.");
+            }
+            
+            await repository.DeleteAsync(employee, token);
         }
 
         public async Task<EmployeeDto> GetEmployeeAsync(Guid id, CancellationToken token = default)
         {
-            // var employee = await repository.Employee.GetEmployeeAsync(id, token);
-            //
-            // if (employee == null)
-            // {
-            //     throw new EntityNotFoundException($"Сотрудник с идентификатором: {id} не существует в базе данных.");
-            // }
-            //
-            // return mapper.Map<EmployeeDto>(employee);
-            return default;
+            var employee = await repository.SingleOrDefaultAsync<Employee>(
+                x => x.Id == id,
+                x => x.Summaries,
+                token
+            );
+            
+            if (employee == null)
+            {
+                throw new EntityNotFoundException($"Сотрудник с идентификатором: {id} не существует в базе данных.");
+            }
+            
+            return mapper.Map<EmployeeDto>(employee);
         }
 
         public async Task<IEnumerable<EmployeeDto>> GetEmployeesAsync(CancellationToken token = default)
         {
-            // var employees = await repository.Employee.GetAllEmployeesAsync(token);
-            //
-            // return mapper.Map<IEnumerable<EmployeeDto>>(employees);
-            return default;
+            var employees = await repository.FindAll<Employee>().ToListAsync(token);
+            
+            return mapper.Map<IEnumerable<EmployeeDto>>(employees);
         }
 
         public async Task<EmployeeDto> PutEmployeeAsync(Guid id, EmployeeForUpdateDto employee, CancellationToken token)
         {
-            // if (employee == null)
-            // {
-            //     throw new ArgumentNullException(nameof(employee));
-            // }
-            //
-            // var employeeEntity = await repository.Employee.GetEmployeeAsync(id, token);
-            //
-            // if (employeeEntity == null)
-            // {
-            //     throw new EntityNotFoundException($"Сотрудник с идентификатором: {id} не существует в базе данных.");
-            // }
-            //
-            // mapper.Map(employee, employeeEntity);
-            //
-            // await repository.SaveAsync(token);
-            //
-            // return mapper.Map<EmployeeDto>(employeeEntity);
+            if (employee == null)
+            {
+                throw new ArgumentNullException(nameof(employee));
+            }
 
-            return default;
+            var employeeEntity = await repository.SingleOrDefaultAsync<Employee>(x => x.Id == id, token: token);
+            
+            if (employeeEntity == null)
+            {
+                throw new EntityNotFoundException($"Сотрудник с идентификатором: {id} не существует в базе данных.");
+            }
+            
+            mapper.Map(employee, employeeEntity);
+            
+            await repository.Update(employeeEntity, token);
+            
+            return mapper.Map<EmployeeDto>(employeeEntity);
         }
     }
 }
