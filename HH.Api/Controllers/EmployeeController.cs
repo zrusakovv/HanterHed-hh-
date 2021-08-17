@@ -1,9 +1,5 @@
-﻿using AutoMapper;
-using HH.ApplicationServices.Services.Interfaces;
-using HH.Core;
-using HH.Data.Abstractions;
+﻿using HH.ApplicationServices.Services.Interfaces;
 using HH.DTO;
-using HH.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;

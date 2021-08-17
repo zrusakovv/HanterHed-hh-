@@ -31,6 +31,7 @@ namespace HH.Api
             services.ConfigureSqlContext(Configuration);
             services.ConfigureRepository();
             services.FluentValidation();
+            services.AddAuthentication();
 
             services.AutoMapper();
 
@@ -69,6 +70,7 @@ namespace HH.Api
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My Head Hanter");
             });
             app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
