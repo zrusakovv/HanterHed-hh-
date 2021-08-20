@@ -23,6 +23,6 @@
     <ProjectReference Include="..\HH.Data.Abstractions\HH.Data.Abstractions.csproj" />
     <ProjectReference Include="..\HH.Data\HH.Data.csproj" />
     <ProjectReference Include="..\HH.Identity\HH.Identity.csproj" />
-  </ItemGroup>
+   </ItemGroup>
 
 </Project>
