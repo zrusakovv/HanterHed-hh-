@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HH.Api.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     [Route("api/employees/{employeeId}/summarys")]
     [ApiController]
     public class SummaryController : ControllerBase
@@ -17,6 +19,7 @@ namespace HH.Api.Controllers
             this.summaryService = summaryService;
         }
 
+        [Authorize(Roles = "Employee")]
         [HttpGet]
         public async Task<IActionResult> GetSummarysFromCompany(Guid employeeId)
         {
@@ -30,6 +33,7 @@ namespace HH.Api.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = "Employee")]
         [HttpGet("{id}", Name = "GetSummaryForEmployee")]
         public async Task<IActionResult> GetSummaryFromEmployee(Guid employeeId, Guid id)
         {

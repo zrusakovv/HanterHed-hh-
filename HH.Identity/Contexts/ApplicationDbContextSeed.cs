@@ -10,11 +10,11 @@ namespace HH.Identity.Contexts
     {
         public static async Task SeedEssentialsAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            //Seed Roles
+            
             await roleManager.CreateAsync(new IdentityRole(Authorization.Roles.Administrator.ToString()));
-            await roleManager.CreateAsync(new IdentityRole(Authorization.Roles.Moderator.ToString()));
-            await roleManager.CreateAsync(new IdentityRole(Authorization.Roles.User.ToString()));
-            //Seed Default User
+            await roleManager.CreateAsync(new IdentityRole(Authorization.Roles.Company.ToString()));
+            await roleManager.CreateAsync(new IdentityRole(Authorization.Roles.Employee.ToString()));
+            
             var defaultUser = new ApplicationUser { UserName = Authorization.default_username, Email = Authorization.default_email, EmailConfirmed = true, PhoneNumberConfirmed = true };
             if (userManager.Users.All(u => u.Id != defaultUser.Id))
             {

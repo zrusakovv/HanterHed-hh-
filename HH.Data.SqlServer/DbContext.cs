@@ -5,7 +5,7 @@ namespace HH.Data.SqlServer
 {
     public class DbContext : Microsoft.EntityFrameworkCore.DbContext
     {
-        public DbContext(DbContextOptions options) : base(options) { }
+        public DbContext(DbContextOptions<DbContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

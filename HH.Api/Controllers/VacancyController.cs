@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HH.Api.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     [Route("api/vacancys/{companyId}/vacancys")]
     [ApiController]
     public class VacancyController : ControllerBase
@@ -17,6 +19,7 @@ namespace HH.Api.Controllers
             this.vacancyService = vacancyService;
         }
 
+        [Authorize(Roles = "Company")]
         [HttpGet]
         public async Task<IActionResult> GetVacancys(Guid companyId)
         {
@@ -30,6 +33,7 @@ namespace HH.Api.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = "Company")]
         [HttpGet("{id}", Name = "GetVacancyForCompany")]
         public async Task<IActionResult> GetVacancy(Guid companyId, Guid id)
         {
