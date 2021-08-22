@@ -18,8 +18,8 @@ namespace HH.Api.Controllers
         {
             this.companyService = companyService;
         }
-
-        [Authorize(Roles = "Employee")]
+        
+        [Authorize(Roles ="Administrator,Employee")]
         [HttpGet]
         public async Task<IActionResult> GetCompanies()
         {
@@ -33,7 +33,7 @@ namespace HH.Api.Controllers
             return Ok(result);
         }
         
-        [Authorize(Roles = "Employee")]
+        [Authorize(Roles ="Administrator,Employee")]
         [HttpGet("{id}", Name = "CompanyById")]
         public async Task<IActionResult> GetCompany(Guid id)
         {

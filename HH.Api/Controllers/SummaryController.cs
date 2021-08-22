@@ -18,7 +18,7 @@ namespace HH.Api.Controllers
             this.summaryService = summaryService;
         }
 
-        [Authorize(Roles = "Company")]
+        [Authorize(Roles ="Administrator,Employee")]
         [HttpGet]
         public async Task<IActionResult> GetSummarysFromCompany(Guid employeeId)
         {
@@ -32,7 +32,7 @@ namespace HH.Api.Controllers
             return Ok(result);
         }
 
-        [Authorize(Roles = "Company")]
+        [Authorize(Roles ="Administrator,Employee")]
         [HttpGet("{id}", Name = "GetSummaryForEmployee")]
         public async Task<IActionResult> GetSummaryFromEmployee(Guid employeeId, Guid id)
         {

@@ -50,12 +50,6 @@ namespace HH.ApplicationServices.Services.Implementations
             
             if (userWithSameEmail == null)
             {
-                var result = await userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    await userManager.AddToRoleAsync(user, Authorization.default_role.ToString());
-                    await context.SaveChangesAsync();
-                }
                 return $"User Registered with username {user.UserName}";
             }
             else

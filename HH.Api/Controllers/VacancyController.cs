@@ -18,7 +18,7 @@ namespace HH.Api.Controllers
             this.vacancyService = vacancyService;
         }
 
-        [Authorize(Roles = "Employee")]
+        [Authorize(Roles ="Administrator,Company")]
         [HttpGet]
         public async Task<IActionResult> GetVacancys(Guid companyId)
         {
@@ -32,7 +32,7 @@ namespace HH.Api.Controllers
             return Ok(result);
         }
 
-        [Authorize(Roles = "Employee")]
+        [Authorize(Roles ="Administrator,Company")]
         [HttpGet("{id}", Name = "GetVacancyForCompany")]
         public async Task<IActionResult> GetVacancy(Guid companyId, Guid id)
         {
