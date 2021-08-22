@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace HH.Api.Controllers
 {
-    [Authorize(Roles = "Administrator")]
     [Route("api/companies")]
     [ApiController]
     public class CompaniesController : ControllerBase
@@ -33,7 +32,7 @@ namespace HH.Api.Controllers
 
             return Ok(result);
         }
-
+        
         [Authorize(Roles = "Employee")]
         [HttpGet("{id}", Name = "CompanyById")]
         public async Task<IActionResult> GetCompany(Guid id)

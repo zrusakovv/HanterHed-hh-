@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using HH.ApplicationServices.Services.Interfaces;
+using HH.Data.SqlServer;
 using HH.Identity.Constants;
+using HH.Identity.Entities;
 using HH.Identity.Models;
 using HH.Identity.Settings;
 using Microsoft.AspNetCore.Identity;
@@ -17,11 +20,17 @@ namespace HH.ApplicationServices.Services.Implementations
 {
     public class UserService: IUserService
     {
+        private readonly ApplicationDbContext context;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly JWT jwt;
-        public UserService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IOptions<JWT> jwt)
+        public UserService(
+            UserManager<ApplicationUser> userManager, 
+            RoleManager<IdentityRole> roleManager, 
+            IOptions<JWT> jwt,
+            ApplicationDbContext context)
         {
+            this.context = context;
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.jwt = jwt.Value;
@@ -44,7 +53,8 @@ namespace HH.ApplicationServices.Services.Implementations
                 var result = await userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(user, Authorization.default_role.ToString());                 
+                    await userManager.AddToRoleAsync(user, Authorization.default_role.ToString());
+                    await context.SaveChangesAsync();
                 }
                 return $"User Registered with username {user.UserName}";
             }
@@ -54,7 +64,7 @@ namespace HH.ApplicationServices.Services.Implementations
             }
         }
 
-        public async Task<AuthenticationModel> GetTokenAsync(TokenRequestModel model)
+        public async Task<AuthenticationModel> LoginAsync(TokenRequestModel model)
         {
             var authenticationModel = new AuthenticationModel();
 
@@ -87,6 +97,31 @@ namespace HH.ApplicationServices.Services.Implementations
                     .ConfigureAwait(false);
                 
                 authenticationModel.Roles = rolesList.ToList();
+
+                if (user.RefreshTokens.Any(a => a.IsActive))
+                {
+                    var activeRefreshToken = user.RefreshTokens
+                        .Where(a => a.IsActive == true)
+                        .FirstOrDefault();
+
+                    if (activeRefreshToken != null)
+                    {
+                        authenticationModel.RefreshToken = activeRefreshToken.Token;
+                        authenticationModel.RefreshTokenExpiration = activeRefreshToken.Expires;
+                    }
+                }
+                else
+                {
+                    var refreshToken = CreateRefreshToken();
+                    
+                    authenticationModel.RefreshToken = refreshToken.Token;
+                    authenticationModel.RefreshTokenExpiration = refreshToken.Expires;
+                    
+                    user.RefreshTokens.Add(refreshToken);
+
+                    context.Update(user);
+                    await context.SaveChangesAsync();
+                }
                 
                 return authenticationModel;
             }
@@ -165,5 +200,109 @@ namespace HH.ApplicationServices.Services.Implementations
             
             return $"Incorrect Credentials for user {user.Email}.";
         }
+
+        public async Task<AuthenticationModel> RefreshTokenAsync(string token)
+        {
+            var authenticationModel = new AuthenticationModel();//Создание нового объекта Response
+            
+            var user = context 
+                .Users
+                .SingleOrDefault(u => u.RefreshTokens.Any(t => t.Token == token));//Проверка наличия подходящего прльзователя для токена
+            
+            if (user == null)//Если подходящего пользователя нет
+            {
+                authenticationModel.IsAuthenticated = false;
+                
+                authenticationModel.Message = $"Token did not match any users.";
+                
+                return authenticationModel;
+            }
+            
+            var refreshToken = user.RefreshTokens
+                .Single(x => x.Token == token);
+            
+            if (!refreshToken.IsActive)
+            {
+                authenticationModel.IsAuthenticated = false;
+                
+                authenticationModel.Message = $"Token Not Active.";
+                
+                return authenticationModel;
+            }
+            
+            //Отменить текущий токен обновления
+            refreshToken.Revoked = DateTime.UtcNow;
+            
+            //Сгенерируйте новый токен обновления и сохраните в базе данных
+            var newRefreshToken = CreateRefreshToken();
+            user.RefreshTokens.Add(newRefreshToken);
+            
+            context.Update(user);
+            context.SaveChanges();
+            
+            //Создает новый jwt
+            authenticationModel.IsAuthenticated = true;
+            
+            JwtSecurityToken jwtSecurityToken = await CreateJwtToken(user);
+            
+            authenticationModel.Token = new JwtSecurityTokenHandler()
+                .WriteToken(jwtSecurityToken);
+            
+            authenticationModel.Email = user.Email;
+            authenticationModel.UserName = user.UserName;
+            
+            var rolesList = await userManager
+                .GetRolesAsync(user)
+                .ConfigureAwait(false);
+            
+            authenticationModel.Roles = rolesList.ToList();
+            authenticationModel.RefreshToken = newRefreshToken.Token;
+            authenticationModel.RefreshTokenExpiration = newRefreshToken.Expires;
+            
+            return authenticationModel;
+        }
+
+        public ApplicationUser GetById(string id)
+        {
+            return context.Users.Find(id);
+        }
+
+        public bool RevokeToken(string token)
+        {
+            var user = context.Users.SingleOrDefault(u => u.RefreshTokens.Any(t => t.Token == token));
+            
+            // вернет false, если пользователь с токеном не найден
+            if (user == null) return false;
+            
+            var refreshToken = user.RefreshTokens.Single(x => x.Token == token);
+            
+            // вернет false, если токен не активен
+            if (!refreshToken.IsActive) return false;
+            
+            refreshToken.Revoked = DateTime.UtcNow;
+            
+            context.Update(user);
+            context.SaveChanges();
+            
+            return true;
+        }
+
+        private RefreshToken CreateRefreshToken()
+        {
+            var randomNumber = new byte[32];
+            
+            using(var generator = new RNGCryptoServiceProvider())
+            {
+                generator.GetBytes(randomNumber);
+                
+                return new RefreshToken
+                {
+                    Token = Convert.ToBase64String(randomNumber),
+                    Expires = DateTime.UtcNow.AddDays(10),
+                    Created = DateTime.UtcNow
+                };
+            }
+        }
+        
     }
 }

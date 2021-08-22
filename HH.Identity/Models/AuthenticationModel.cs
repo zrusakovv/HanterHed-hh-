@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace HH.Identity.Models
 {
@@ -10,5 +12,9 @@ namespace HH.Identity.Models
         public string Email { get; set; }
         public List<string> Roles { get; set; }
         public string Token { get; set; }
+        
+        [JsonIgnore]
+        public string RefreshToken { get; set; }
+        public DateTime RefreshTokenExpiration { get; set; }
     }
 }

@@ -5,13 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.9" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.12.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\HH.Data.Abstractions\HH.Data.Abstractions.csproj" />
+    <ProjectReference Include="..\HH.Data.SqlServer\HH.Data.SqlServer.csproj" />
     <ProjectReference Include="..\HH.Identity\HH.Identity.csproj" />
     <ProjectReference Include="..\HH.Infrastructure\HH.Infrastructure.csproj" />
   </ItemGroup>
